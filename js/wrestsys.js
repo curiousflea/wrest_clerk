@@ -63,6 +63,34 @@ function Period()
 	this.totalTechnicalPoints = 0;
 }
 
+function autoLots(wrestlers, start, step)
+{
+	// Create array of lots with special start and step parameters
+	let lots = [];
+	let lot = start;
+	let existedLots = wrestlers.filter(w => w.lot !== "").map(w => w.Lot);
+	wrestlers.forEach(w => {
+		if (existedLots.indexOf(w.lot) === -1)
+			lots.push(lot);
+		lot += step;
+	});
+
+	// Rearrange lots
+	lots.forEach(() => {
+		let x = Math.floor(Math.random() * lots.length);
+		let y = Math.floor(Math.random() * lots.length);
+		let tmp = lots[x];
+		lots[x] = lots[y];
+		lots[y] = tmp;
+	});
+
+	// Set empty lots
+	wrestlers.forEach(w => {
+		if (w.lot === "")
+			w.lot = lots.pop();
+	});
+}
+
 const CS_NORDIC             = 0;
 const CS_NORDIC_AB          = 1;
 const CS_DIRECT_ELIMINATION = 2;

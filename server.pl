@@ -7,7 +7,7 @@ use HTTP::Status;
 
 my $d = HTTP::Daemon->new(
 	LocalAddr => '192.168.15.65',
-	LocalPort => 8080,
+	LocalPort => 4040,
 	ReuseAddr => 1,
 	ReusePort => 1,
 	Listen    => 10,
@@ -33,35 +33,25 @@ while (my $c = $d->accept) {
 			printf "PID $$: \t%s\n", $r->uri->path;
 
 			if ($r->uri->path =~ m|\A/\z|) {
-				my $file = "html/index.html";
-				$c->send_file_response($file);
+				$c->send_file_response('index.html');
 
-			} elsif ($r->uri->path =~ m|\A/.+\.html\z|) {
-				my $file = 'html' . $r->uri->path;
-				$c->send_file_response($file);
-
-			} elsif ($r->uri->path =~ m|\A/css/.+\.css\z|) {
+			} elsif ($r->uri->path =~
+				m#\A/(?:css|js|lib)/.+\.(?:css|js|map)\z#)
+			{
 				my $file = '.' . $r->uri->path;
 				$c->send_file_response($file);
 
-			} elsif ($r->uri->path =~ m|\A/js/.+\.js\z|) {
-				my $file = '.' . $r->uri->path;
-				$c->send_file_response($file);
+#} elsif ($r->uri->path eq "/help") {
+#	$c->send_response(HTTP::Response->new(
+#		RC_OK, 'XEP', HTTP::Headers->new(
+#			'Server'       => 'Simple',
+#			'Date'         => time,
+#			'Content-Type' => 'text/html',
+#			'Content-Base' => 'http://www.perl.org/',
+#		),
+#		undef,
+#	));
 
-			} elsif ($r->uri->path =~ m|\A/fr_.+\.html\z|) {
-				my $file = '.' . $r->uri->path;
-				$c->send_file_response($file);
-
-				#	} elsif ($r->uri->path eq "/help") {
-				#		$c->send_response(HTTP::Response->new(
-				#			RC_OK, 'XEP', HTTP::Headers->new(
-				#				'Server'       => 'Simple',
-				#				'Date'         => time,
-				#				'Content-Type' => 'text/html',
-				#				'Content-Base' => 'http://www.perl.org/',
-				#			),
-				#			undef,
-				#		));
 			} else {
 				$c->send_error(RC_FORBIDDEN);
 				print "PID $$: \tFORBIDDEN\n";
