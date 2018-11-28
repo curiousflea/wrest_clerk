@@ -13,6 +13,9 @@ function WeightCategory()
 {
 	this.wrestlers = [];
 	this.rounds    = [];
+
+	this.sort = function() {
+	}
 }
 
 function Wrestler()
