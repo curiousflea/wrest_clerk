@@ -20,7 +20,7 @@ class Player
 	constructor(color)
 	{
 		this.color                = color;
-		this.wrestler             = 0;
+		this.index                = 0;
 		this.technicalPoints      = 0;
 		this.classificationPoints = 0;
 		this.periods              = [];
@@ -47,9 +47,14 @@ class Match
 
 class Round
 {
-	constructor()
+	constructor(matchesCount = 0)
 	{
 		this.matches = [];
+		for (let i = 0; i < matchesCount; ++i)
+		{
+			let match = new Match();
+			this.matches.push(match);
+		}
 	}
 }
 
@@ -153,6 +158,133 @@ class Weight
 
 	calc()
 	{
+		this.sort();
+	}
+
+	calcNordic()
+	{
+		let round;
+		this.rounds.length = 0;
+		switch (this.wrestlers.length)
+		{
+			case 1:
+				// Round №1
+				round = new Round(1);
+				this.rounds.push(round);
+				round.matches[0].red.index  = 0;
+				round.matches[0].blue.index = -1;
+				break;
+			case 2:
+				// Round №1
+				round = new Round(1);
+				this.rounds.push(round);
+				round.matches[0].red.index  = 0;
+				round.matches[0].blue.index = 1;
+				break;
+			case 3:
+				// Round №1
+				round = new Round(2);
+				this.rounds.push(round);
+				round.matches[0].red.index  = 0;
+				round.matches[0].blue.index = 1;
+				round.matches[1].red.index  = 2;
+				round.matches[1].blue.index = -1;
+
+				// Round №2
+				round = new Round(2);
+				this.rounds.push(round);
+				round.matches[0].red.index  = 2;
+				round.matches[0].blue.index = 0;
+				round.matches[1].red.index  = 1;
+				round.matches[1].blue.index = -1;
+
+				// Round №3
+				round = new Round(2);
+				this.rounds.push(round);
+				round.matches[0].red.index  = 1;
+				round.matches[0].blue.index = 2;
+				round.matches[1].red.index  = 0;
+				round.matches[1].blue.index = -1;
+				break;
+			case 4:
+				// Round №1
+				round = new Round(2);
+				this.rounds.push(round);
+				round.matches[0].red.index  = 0;
+				round.matches[0].blue.index = 1;
+				round.matches[1].red.index  = 2;
+				round.matches[1].blue.index = 3;
+
+				// Round №2
+				round = new Round(2);
+				this.rounds.push(round);
+				round.matches[0].red.index  = 3;
+				round.matches[0].blue.index = 0;
+				round.matches[1].red.index  = 1;
+				round.matches[1].blue.index = 2;
+
+				// Round №3
+				round = new Round(2);
+				this.rounds.push(round);
+				round.matches[0].red.index  = 0;
+				round.matches[0].blue.index = 2;
+				round.matches[1].red.index  = 1;
+				round.matches[1].blue.index = 3;
+				break;
+			case 5:
+				// Round №1
+				round = new Round(3);
+				this.rounds.push(round);
+				round.matches[0].red.index  = 0;
+				round.matches[0].blue.index = 1;
+				round.matches[1].red.index  = 2;
+				round.matches[1].blue.index = 3;
+				round.matches[2].red.index  = 4;
+				round.matches[2].blue.index = -1;
+
+				// Round №2
+				round = new Round(3);
+				this.rounds.push(round);
+				round.matches[0].red.index  = 4;
+				round.matches[0].blue.index = 0;
+				round.matches[1].red.index  = 1;
+				round.matches[1].blue.index = 2;
+				round.matches[2].red.index  = 3;
+				round.matches[2].blue.index = -1;
+
+				// Round №3
+				round = new Round(3);
+				this.rounds.push(round);
+				round.matches[0].red.index  = 1;
+				round.matches[0].blue.index = 4;
+				round.matches[1].red.index  = 0;
+				round.matches[1].blue.index = 3;
+				round.matches[2].red.index  = 2;
+				round.matches[2].blue.index = -1;
+
+				// Round №4
+				round = new Round(3);
+				this.rounds.push(round);
+				round.matches[0].red.index  = 3;
+				round.matches[0].blue.index = 4;
+				round.matches[1].red.index  = 2;
+				round.matches[1].blue.index = 0;
+				round.matches[2].red.index  = 1;
+				round.matches[2].blue.index = -1;
+
+				// Round №5
+				round = new Round(3);
+				this.rounds.push(round);
+				round.matches[0].red.index  = 1;
+				round.matches[0].blue.index = 3;
+				round.matches[1].red.index  = 4;
+				round.matches[1].blue.index = 2;
+				round.matches[2].red.index  = 0;
+				round.matches[2].blue.index = -1;
+				break;
+			default:
+				break;
+		}
 	}
 }
 
