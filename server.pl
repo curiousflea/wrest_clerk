@@ -7,7 +7,7 @@ use HTTP::Status;
 
 my $d = HTTP::Daemon->new(
 	LocalAddr => '192.168.15.65',
-	LocalPort => 4040,
+	LocalPort => 8080,
 	ReuseAddr => 1,
 	ReusePort => 1,
 	Listen    => 10,
@@ -33,6 +33,7 @@ while (my $c = $d->accept) {
 			printf "PID $$: \t%s\n", $r->uri->path;
 
 			if ($r->uri->path =~ m|\A/\z|) {
+				qx|./assemble.sh|;
 				$c->send_file_response('index.html');
 
 			} elsif ($r->uri->path =~

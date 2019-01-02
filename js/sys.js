@@ -61,9 +61,13 @@ class Match
 			return this.red.index;
 		else if (this.red.dummy && !this.blue.dummy)
 			return this.blue.index;
-		else if (this.red.classificationPoints >= 3)
+		else if (this.red.classificationPoints >= 3 &&
+			this.blue.classificationPoints < 3
+		)
 			return this.red.index;
-		else if (this.blue.classificationPoints >= 3)
+		else if (this.red.classificationPoints < 3 &&
+			this.blue.classificationPoints >= 3
+		)
 			return this.blue.index;
 		else
 			return -1;
@@ -71,11 +75,7 @@ class Match
 
 	get loser()
 	{
-		if (this.red.dummy && this.blue.dummy)
-			return -1;
-		else if (!this.red.dummy && this.blue.dummy)
-			return -1;
-		else if (this.red.dummy && !this.blue.dummy)
+		if (this.red.dummy || this.blue.dummy)
 			return -1;
 		else if (this.red.classificationPoints >= 3 &&
 			this.blue.classificationPoints < 3
@@ -101,6 +101,15 @@ class Round
 			this.matches.push(match);
 		}
 	}
+
+	get finished()
+	{
+		for (let m of this.matches)
+			if (!m.finished)
+				return false;
+		return true;
+	}
+
 }
 
 class Wrestler
