@@ -6,8 +6,8 @@ use HTTP::Daemon;
 use HTTP::Status;
 
 my $d = HTTP::Daemon->new(
-	LocalAddr => '192.168.15.65',
-	LocalPort => 8080,
+	#	LocalAddr => '192.168.15.65',
+	LocalPort => 54321,
 	ReuseAddr => 1,
 	ReusePort => 1,
 	Listen    => 10,
