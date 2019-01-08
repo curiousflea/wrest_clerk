@@ -7,6 +7,7 @@
 	<script src="js/sys.js"></script>
 	<script src="js/gui.js"></script>
 </head>
+
 <body>
 	<div id="weights">
 	</div>
@@ -14,8 +15,21 @@
 	</div>
 	<div id="sheetWeighting">
 		<table>
+			<thead>
+				<th data-column="number">№</th>
+				<th data-column="weight">Вес</th>
+				<th data-column="name">ФИО</th>
+				<th data-column="birthdate">Год рождения</th>
+				<th data-column="grade">Разряд</th>
+				<th data-column="country">Город</th>
+				<th data-column="coach">Тренер</th>
+				<th data-column="lot">Жребий</th>
+			</thead>
 		</table>
 	</div>
+
+	include(html/form_add.html)
+
 	<div id="sheetProcess">
 	</div>
 	<div id="sheetStarting">

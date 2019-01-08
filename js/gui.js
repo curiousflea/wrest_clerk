@@ -13,6 +13,19 @@ function ready(fn)
 ready(
 	() =>
 	{
+		let cmpt = new Competition();
+
+		document.forms.add.elements.add.addEventListener("click",
+			() =>
+			{
+				let w = newWrestler();
+				cmpt.athletes.push(w);
+				drawTableWrestlers(
+					document.querySelector("table"),
+					cmpt.athletes);
+			}
+		);
+
 
 		let weight = new Weight();
 		for (let i = 0; i < 7; ++i) {
@@ -49,53 +62,55 @@ function loadStoredData()
 	}
 }
 
+function drawTableWrestlers(table, wrestlers)
+{
+	// Order of columns
+	let columns = [];
+	for (let e of table.createTHead().children[0].cells)
+		columns.push(e.dataset.column);
+
+	// Body
+	let tbody = table.querySelector("tbody");
+	if (!tbody)
+		tbody = table.createTBody();
+
+	// Remove old content
+	while (tbody.firstElementChild)
+		tbody.firstElementChild.remove();
+
+	// Append new content
+	let frag = document.createDocumentFragment();
+	for (let i = 0; i < wrestlers.length; ++i)
+	{
+		let w = wrestlers[i];
+		let tr = document.createElement("tr");
+		for (let j = 0; j < columns.length; ++j)
+		{
+			let td = document.createElement("td");
+			let prop = columns[j];
+			if (prop === "number")
+				td.append(i + 1);
+			else
+				td.append(w[prop]);
+			tr.append(td);
+		}
+		frag.append(tr);
+	}
+	tbody.append(frag);
+}
+
+function newWrestler()
+{
+	let w = new Wrestler();
+	for (let e of document.forms.add.querySelectorAll("input"))
+		w[e.name] = e.value;
+	return w;
+}
+
 function newRowWithCells(cellTag, cellCount)
 {
 	let tr = document.createElement("tr");
 	for (let i = 0; i < cellCount; ++i)
 		tr.append(document.createElement(cellTag));
 	return tr;
-}
-
-function drawTableWrestlers(table, wrestlers)
-{
-	// Remove old rows
-	for (let e of table.querySelectorAll("tr"))
-		e.remove();
-
-	// Head
-	let frag = document.createDocumentFragment();
-	let tr = newRowWithCells("th", 8);
-	frag.append(tr);
-	tr.cells[0].append("№");
-	tr.cells[1].append("Жребий");
-	tr.cells[2].append("ФИО");
-	tr.cells[3].append("Год рождения");
-	tr.cells[4].append("Разряд");
-	tr.cells[5].append("Город");
-	tr.cells[6].append("Тренер");
-	tr.cells[7].append("Вес");
-	let thead = table.createTHead();
-	thead.append(frag);
-
-	// Body
-	for (let i = 0; i < wrestlers.length; ++i)
-	{
-		let w = wrestlers[i];
-		tr = newRowWithCells("td", 8);
-		frag.append(tr);
-		tr.cells[0].append(i + 1);
-		tr.cells[1].append(w.lot);
-		tr.cells[2].append(w.name);
-		tr.cells[3].append(w.birthdate);
-		tr.cells[4].append(w.grade);
-		tr.cells[5].append(w.country);
-		tr.cells[6].append(w.coach);
-		tr.cells[7].append(w.weight);
-	}
-
-	let tbody = table.querySelector("tbody");
-	if (!tbody)
-		tbody = table.createTBody();
-	tbody.append(frag);
 }
